@@ -5,15 +5,15 @@ from wtforms.validators import *
 # 로그인 유효성 검사
 class LoginValidation(Inputs):
     form = {
-        'id': [DataRequired(), Length(max=10)],
-        'password': [DataRequired()],
+        'id': [InputRequired(), Length(max=10)],
+        'password': [InputRequired()],
     }
 
 # 로그아웃 유효성 검사
 class LogoutValidation(Inputs):
     form = {
-        'member_idx': [DataRequired()],
-        'login_token': [DataRequired()],
+        'member_idx': [InputRequired()],
+        'login_token': [InputRequired()],
     }
 
 # 회원가입 유효성 검사
