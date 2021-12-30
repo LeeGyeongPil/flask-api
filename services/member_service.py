@@ -16,17 +16,18 @@ class MemberService:
                         member_nickname = %(member_nickname)s, \
                         member_password = %(member_password)s, \
                         member_tel = %(member_tel)s, \
-                        member_email = %(member_email)s, \
-                        member_gender = %(member_gender)s'
+                        member_email = %(member_email)s'
             param = {
                 'member_id': request['id'],
                 'member_name': request['name'],
                 'member_nickname': request['nick'],
                 'member_password': hashlib.sha256(request['password'].encode()).hexdigest(),
                 'member_tel': request['tel'],
-                'member_email': request['email'],
-                'member_gender': request['gender']
+                'member_email': request['email']
             }
+            if request.get('gender'):
+                query = query + ',member_gender = %(member_gender)s'
+                param['member_gender'] = request['gender']
             self.db.execute(query, param)
             self.db.commit()
             return True

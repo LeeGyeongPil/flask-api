@@ -5,9 +5,28 @@ class LoginController:
     def __init__(self):
         self.memberService = MemberService()
 
+    '''
+    POST::/api/login
+    로그인
+
+    @PARAMETER
+        id                      : 회원아이디
+        password                : 회원비밀번호
+    
+    @RETURN
+        code                    : 응답코드
+        message                 : 응답메세지
+        data                    : 
+            member_idx          : 식별자
+            member_id           : 아이디
+            member_name         : 이름
+            member_nickname     : 닉네임
+            last_login_datetime : 마지막로그인일자
+            login_token         : 로그인토큰
+    '''
     def login(self):
         try:
-            if request.environ.get('HTTP_AUTHORIZATION') is '':
+            if request.environ.get('HTTP_AUTHORIZATION') == '':
                 return {
                     'code': '8888',
                     'message': 'Invalid Access Key'
@@ -38,9 +57,21 @@ class LoginController:
                 'message': 'Internal Server Error :: ' + str(e)
             }, 500
 
+    '''
+    POST::/api/login
+    로그아웃
+
+    @PARAMETER
+        member_idx  : 식별자
+        token       : 로그인토큰
+    
+    @RETURN
+        code        : 응답코드
+        message     : 응답메세지
+    '''
     def logout(self):
         try:
-            if request.environ.get('HTTP_AUTHORIZATION') is '':
+            if request.environ.get('HTTP_AUTHORIZATION') == '':
                 return {
                     'code': '8888',
                     'message': 'Invalid Access Key'
