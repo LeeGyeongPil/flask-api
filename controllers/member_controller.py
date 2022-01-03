@@ -86,6 +86,8 @@ class MemberController:
                     'message': 'No Data'
                 }, 200
             elif type(result) is dict:
+                result["join_datetime"] = result["join_datetime"].strftime("%Y-%m-%d %H:%M:%S")
+                result["last_login_datetime"] = result["last_login_datetime"].strftime("%Y-%m-%d %H:%M:%S")
                 return {
                     'code': '0000',
                     'message': 'Member Info Success',
@@ -135,6 +137,10 @@ class MemberController:
                     'message': 'No Data'
                 }, 200
             elif type(result) is list:
+                for key, val in enumerate(result):
+                    result[key]["order_datetime"] = val["order_datetime"].strftime("%Y-%m-%d %H:%M:%S")
+                    if result[key]["pay_datetime"] is not None:
+                        result[key]["pay_datetime"] = val["pay_datetime"].strftime("%Y-%m-%d %H:%M:%S")
                 return {
                     'code': '0000',
                     'message': 'Member Order List Success',
@@ -174,7 +180,12 @@ class MemberController:
             member_gender       : 성별 (M:남성, F:여성)
             join_datetime       : 회원가입일자
             last_login_datetime : 마지막로그인일자
-            last_order_datetime : 마지막주문일자
+            last_order          : 마지막주문
+                order_no        : 주문번호
+                product_name    : 상품명
+                order_price     : 주문금액
+                order_datetime  : 주문일자
+                pay_datetime    : 결제일자
     '''
     def memberList(self):
         try:
@@ -191,6 +202,15 @@ class MemberController:
                     'message': 'No Data'
                 }, 200
             elif type(result) is list:
+                for key, val in enumerate(result):
+                    result[key]["join_datetime"] = val["join_datetime"].strftime("%Y-%m-%d %H:%M:%S")
+                    result[key]["last_login_datetime"] = val["last_login_datetime"].strftime("%Y-%m-%d %H:%M:%S")
+                    lastOrder = self.orderService.getLastOrder(val["member_idx"])
+                    if lastOrder is not None:
+                        lastOrder["order_datetime"] = lastOrder["order_datetime"].strftime("%Y-%m-%d %H:%M:%S")
+                        if lastOrder["pay_datetime"] is not None:
+                            lastOrder["pay_datetime"] = lastOrder["pay_datetime"].strftime("%Y-%m-%d %H:%M:%S")
+                    result[key]["last_order"] = lastOrder
                 return {
                     'code': '0000',
                     'message': 'Member List Success',

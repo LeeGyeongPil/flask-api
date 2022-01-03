@@ -39,6 +39,7 @@ class LoginController:
                     'message': 'Login Fail'
                 }, 200
             elif type(result) is dict:
+                result["last_login_datetime"] = result["last_login_datetime"].strftime("%Y-%m-%d %H:%M:%S")
                 result['login_token'] = self.memberService.tokenRefresh(result)
                 return {
                     'code': '0000',
