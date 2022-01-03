@@ -11,12 +11,17 @@ API_KEY="YmFja3BhY2tlcjo6aWR1cw=="
 
 ## 패키지 설치
 ```
-npm install
+pip install flask
+pip install flask_restx
+pip install flask_inputs
+pip install python-dotenv
+pip install pymysql
+pip install wtforms
 ```
 
-## 키 생성
+## 서버 실행
 ```
-node server.py
+python server.py
 ```
 
 ## 데이터베이스
